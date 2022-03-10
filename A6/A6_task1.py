@@ -107,8 +107,8 @@ y = np.array([4, 0])
 h = 0.5
 
 T, y1, y2 = RK_4_2nd_ODE(prob_254, y, xStart, xStop, h)
-plt.plot(T, y1)
-plt.show()
+plt.plot(T, y1,'b')
+
 
 sol = solve_ivp(prob_254, (0, 5), y, method='RK45', max_step=0.5)
 t = sol.t
@@ -116,3 +116,17 @@ y0 = sol.y[0, :]
 
 plt.plot(t, y0)
 plt.show()
+
+# defining the true value with h = 0.5^20
+h = 0.5 ^ 20
+sol = RK_4_2nd_ODE(prob_254, y, xStart, xStop, h)
+# getting values, choosing element 2/h will give the value at 2
+t = sol.t[2/h]
+y0_x2 = sol.y[0, 2/h]
+y1_x2 = sol.y[0, 2/h]
+
+
+
+for i in range(1,8): # picks numbers 1 through 7
+    h = 0.5 ^ i  # step size being halved exponentially
+    sol = RK_4_2nd_ODE(prob_254, y, xStart, xStop, h)  # solve
