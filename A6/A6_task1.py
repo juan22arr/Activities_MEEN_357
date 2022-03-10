@@ -96,6 +96,26 @@ def prob_254(t, y):
     return dydt
 
 
+# defining error function to clean up code for task 2
+def rel_er(t, a):
+    """
+
+    Parameters
+    ==========
+    t: scalar
+        true value/ previous approximation
+    a: scalar
+        approximate value/ current approximation
+
+    Return
+    ===========
+    err: float
+        error calculated
+    """
+    err = abs((t - a) / t) * 100  # relative error equation
+    return err
+
+
 # defining the span
 xStart = 0
 xStop = 5
@@ -107,8 +127,7 @@ y = np.array([4, 0])
 h = 0.5
 
 T, y1, y2 = RK_4_2nd_ODE(prob_254, y, xStart, xStop, h)
-plt.plot(T, y1,'b')
-
+plt.plot(T, y1, 'b')
 
 sol = solve_ivp(prob_254, (0, 5), y, method='RK45', max_step=0.5)
 t = sol.t
@@ -118,15 +137,29 @@ plt.plot(t, y0)
 plt.show()
 
 # defining the true value with h = 0.5^20
-h = 0.5 ^ 20
-sol = RK_4_2nd_ODE(prob_254, y, xStart, xStop, h)
+h = 0.5 ** 20
+T, y0, y1 = RK_4_2nd_ODE(prob_254, y, xStart, xStop, h)
 # getting values, choosing element 2/h will give the value at 2
-t = sol.t[2/h]
-y0_x2 = sol.y[0, 2/h]
-y1_x2 = sol.y[0, 2/h]
+t = T[2 / h]
+true_y = y0[2 / h]
+true_yprime = y1[2 / h]
 
+# initiating an two arrays to hold the state values
+err_Y = []
+err_Y_prime = []
+step_size = []  # to log step size
 
+for i in range(1, 8):  # picks numbers 1 through 7
+    h = 0.5 ** i  # step size being halved exponentially
+    T, y0, y1 = RK_4_2nd_ODE(prob_254, y, xStart, xStop, h)
+    # getting values, choosing element 2/h will give the value at 2
+    t = T[2 / h]
+    y0_x2 = sol.y[0, 2 / h]
+    y1_x2 = sol.y[0, 2 / h]
+    err_Y.append(rel_er(y0_x2, true_y))  # append the calculated error of y to the respective array
+    err_Y_prime.append(rel_er(y1_x2, true_yprime))  # append the calculated error of yprime to the respective array
+    step_size.append(h)
+    print("done: ", i)
 
-for i in range(1,8): # picks numbers 1 through 7
-    h = 0.5 ^ i  # step size being halved exponentially
-    sol = RK_4_2nd_ODE(prob_254, y, xStart, xStop, h)  # solve
+plt.loglog(step_size, err_Y)
+plt.show()
