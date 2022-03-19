@@ -127,22 +127,28 @@ y = np.array([4, 0])
 h = 0.5
 
 T, y1, y2 = RK_4_2nd_ODE(prob_254, y, xStart, xStop, h)
-plt.plot(T, y1, 'b')
+plt.plot(T, y1, 'b', label='y value')
+plt.plot(T, y2, 'g', label="y' values")
 
 sol = solve_ivp(prob_254, (0, 5), y, method='RK45', max_step=0.5)
 t = sol.t
 y0 = sol.y[0, :]
 
-plt.plot(t, y0)
+# plt.plot(t, y0)
+plt.xlabel('X')
+plt.ylabel("Values [unit-less] ")
+plt.legend()
+# plt.savefig("Task1.png")
 plt.show()
+plt.clf()  # clear plot
 
 # defining the true value with h = 0.5^20
 h = 0.5 ** 20
 T, y0, y1 = RK_4_2nd_ODE(prob_254, y, xStart, xStop, h)
 # getting values, choosing element 2/h will give the value at 2
-t = T[2 / h]
-true_y = y0[2 / h]
-true_yprime = y1[2 / h]
+t = T[int(2 / h)]
+true_y = y0[int(2 / h)]
+true_yprime = y1[int(2 / h)]
 
 # initiating an two arrays to hold the state values
 err_Y = []
@@ -153,13 +159,21 @@ for i in range(1, 8):  # picks numbers 1 through 7
     h = 0.5 ** i  # step size being halved exponentially
     T, y0, y1 = RK_4_2nd_ODE(prob_254, y, xStart, xStop, h)
     # getting values, choosing element 2/h will give the value at 2
-    t = T[2 / h]
-    y0_x2 = sol.y[0, 2 / h]
-    y1_x2 = sol.y[0, 2 / h]
+    t = T[int(2 / h)]
+    y0_x2 = y0[int(2 / h)]
+    y1_x2 = y1[int(2 / h)]
     err_Y.append(rel_er(y0_x2, true_y))  # append the calculated error of y to the respective array
     err_Y_prime.append(rel_er(y1_x2, true_yprime))  # append the calculated error of yprime to the respective array
     step_size.append(h)
-    print("done: ", i)
+    # print("done: ", i)
 
-plt.loglog(step_size, err_Y)
+plt.loglog(step_size, err_Y, label='relative error of y')
+plt.loglog(step_size, err_Y_prime, label='relative error of dydx')
+# print(step_size)
+# print(err_Y)
+# print(err_Y_prime)
+plt.legend()
+plt.xlabel("Step size of h")
+plt.ylabel("Error [%]")
+# plt.savefig("Task2.png")
 plt.show()
