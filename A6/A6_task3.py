@@ -25,8 +25,8 @@ h = a / 18
 A = np.zeros((n + 1, n + 1))  # a 10 by 10 matrix so 10 nodes
 A[0, 0] = 1  # y_0 = 0
 A[n, n] = 1  # y_9 = 200
-x = np.linspace(0.5, 1,
-                10)  # setting an x array to get values from for all x values from .5 to 1, of 10 values including endpoint
+x = np.linspace(0.5, 1, 10)  # setting an x array to get values from for all x values from .5 to 1, of 10 values including
+# endpoint
 
 # print(x)
 
@@ -44,7 +44,7 @@ b[-1] = 200  # setting y_9 = 200
 # print(b)
 
 y = (np.linalg.solve(A, b))  # y values
-# print(y)
+print(y)
 
 y_true = 200 * (1 - np.log(x) / np.log(0.5))
 
