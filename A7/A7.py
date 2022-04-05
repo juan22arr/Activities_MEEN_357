@@ -34,13 +34,6 @@ def GaussElim_Solver(A, b):
     return x
 
 
-#
-# for i in range(11):
-#     if (i==0):
-#         print('x | y analytical | y finite difference | y gaussian')
-#     else:
-#         k = i -1
-#         print('{0:1.5f} | {1:1.5f} | {2:1.5f} | {3:1.5f}'.format(x[k], y_true[k], y_1[k], y[k][0]))
 
 # cramer's rule
 def Cramer_solver(A, b):
@@ -120,3 +113,18 @@ plt.xlabel("Radius")
 plt.ylabel("Temperature [C]")
 plt.legend()
 plt.show()
+
+# print(y_cr[1])
+
+# # creating table with values somewhat formatted, to be silenced in submission
+# for i in range(11):
+#     if (i==0):
+#         print("x | y analytical | y lin.solve | y Gaussian | y Cramer's Rule")
+#     else:
+#         k = i -1
+#         x_f = float(x[k])
+#         y_true_f = float(y_true[k])
+#         y_1_f = float(y_1[k])
+#         y_f = float(y[k][0])
+#         y_cr_f = float(y_cr[k])
+#         print('{0:1.5f} | {1:1.5f} | {2:1.5f} | {3:1.5f} | {4:1.5f}'.format(x_f,y_true_f, y_1_f, y_f, y_cr_f))
